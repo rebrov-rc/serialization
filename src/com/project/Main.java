@@ -1,9 +1,28 @@
 package com.project;
 
 import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class Main {
 
+
+    private static void zipFiles(String path, String wh){
+        try(ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(path));
+        FileInputStream fil = new FileInputStream(wh)){
+
+            ZipEntry entry = new ZipEntry("notes.txt");
+            zip.putNextEntry(entry);
+
+            byte [] buffer = new byte [fil.available()];
+            fil.read(buffer);
+            zip.write(buffer);
+            zip.closeEntry();
+
+        }catch( Exception ex  ){
+            System.out.println(ex.getMessage());
+        }
+    }
 
     private static void saveGame(String path, GameProgress game ){
 
@@ -40,7 +59,7 @@ public class Main {
 
             gamesInnerDir[0] = new File(games + "\\src");
             gamesInnerDir[1] = new File(games + "\\res");
-            gamesInnerDir[2] = new File(games + "\\savegames");  //    ****************************************
+            gamesInnerDir[2] = new File(games + "\\savegames");  
             gamesInnerDir[3] = new File(games + "\\temp");
 
 
@@ -207,11 +226,18 @@ public class Main {
 
             }
 
+            try(FileWriter writer = new FileWriter(temp)){
 
-            FileWriter writer = new FileWriter(temp);
-            writer.write(str.toString());
-            writer.flush();
-            writer.close();
+                writer.write(str.toString());
+                writer.flush();
+
+            }catch(IOException exception){
+                System.out.println(exception.getMessage());
+            }
+//            FileWriter writer = new FileWriter(temp);
+//            writer.write(str.toString());
+//            writer.flush();
+//            writer.close();
 
 
         } else {
@@ -230,6 +256,12 @@ public class Main {
         saveGame( gamesInnerDir[2] + "\\game2.dat", game2 );
         saveGame( gamesInnerDir[2] + "\\game3.dat", game3 );
 
+        zipFiles( gamesInnerDir[2] + "\\game1.zip", gamesInnerDir[2] + "\\game1.dat" );
+        zipFiles( gamesInnerDir[2] + "\\game2.zip", gamesInnerDir[2] + "\\game2.dat" );
+        zipFiles( gamesInnerDir[2] + "\\game3.zip", gamesInnerDir[2] + "\\game3.dat" );
+
+
+        ////////////////////////////////////
 
 
     }
