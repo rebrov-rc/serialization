@@ -59,7 +59,7 @@ public class Main {
 
             gamesInnerDir[0] = new File(games + "\\src");
             gamesInnerDir[1] = new File(games + "\\res");
-            gamesInnerDir[2] = new File(games + "\\savegames");  
+            gamesInnerDir[2] = new File(games + "\\savegames");
             gamesInnerDir[3] = new File(games + "\\temp");
 
 
@@ -234,10 +234,7 @@ public class Main {
             }catch(IOException exception){
                 System.out.println(exception.getMessage());
             }
-//            FileWriter writer = new FileWriter(temp);
-//            writer.write(str.toString());
-//            writer.flush();
-//            writer.close();
+
 
 
         } else {
@@ -262,6 +259,14 @@ public class Main {
 
 
         ////////////////////////////////////
+
+        File gm1 = new File(gamesInnerDir[2] + "\\game1.dat" );
+        File gm2 = new File(gamesInnerDir[2] + "\\game2.dat" );
+        File gm3 = new File(gamesInnerDir[2] + "\\game3.dat" );
+
+        gm1.delete();
+        gm2.delete();
+        gm3.delete();
 
 
     }
