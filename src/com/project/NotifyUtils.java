@@ -9,6 +9,8 @@ public class NotifyUtils {
     public static final String DIR_CREATED = "создана директория: ";
     public static final String DIR_ERROR = "не удалось создать директорию: ";
 
+    public static final String DIR_NO_EXIST = "такой директории не существует: ";
+
 
 
 }
