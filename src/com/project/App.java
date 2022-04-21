@@ -53,7 +53,7 @@ public class App {
         try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(path));
              FileInputStream fil = new FileInputStream(wh)) {
 
-            ZipEntry entry = new ZipEntry("notes.txt");
+            ZipEntry entry = new ZipEntry(DirStorage.FILES.NOTES_FILE);
             zip.putNextEntry(entry);
 
             byte[] buffer = new byte[fil.available()];
@@ -161,7 +161,7 @@ public class App {
         return null;
     }
 
-    private boolean writeToFile(File file, String inner){
+    private boolean writeToFile(File file, String inner) {
         try (FileWriter writer = new FileWriter(file)) {
 
             writer.write(inner);
@@ -176,8 +176,8 @@ public class App {
     public void run() {
 
 
-        File rootDir = new File(DirStorage.ROOT);
-        File gamesDir = new File(rootDir + DirStorage.GAMES);
+        File rootDir = new File(DirStorage.ROOT_DIR);
+        File gamesDir = new File(rootDir + DirStorage.GAMES_DIR);
 
         File[] gamesInnerDir = new File[10];
         File[] srcInnerDir = new File[10];
@@ -187,15 +187,13 @@ public class App {
         this.dirCreation(rootDir, new File[]{gamesDir});
 
 
-
-
         ////////////////////////////////////
         // Games  создание директорий.
 
-        gamesInnerDir[0] = new File(gamesDir + "\\src");
-        gamesInnerDir[1] = new File(gamesDir + "\\res");
-        gamesInnerDir[2] = new File(gamesDir + "\\savegames");
-        gamesInnerDir[3] = new File(gamesDir + "\\temp");
+        gamesInnerDir[0] = new File(gamesDir + DirStorage.SRC_DIR);
+        gamesInnerDir[1] = new File(gamesDir + DirStorage.RES_DIR);
+        gamesInnerDir[2] = new File(gamesDir + DirStorage.SAVE_GAMES);
+        gamesInnerDir[3] = new File(gamesDir + DirStorage.TEMP_DIR);
 
         this.dirCreation(gamesDir, gamesInnerDir);
 
@@ -203,36 +201,32 @@ public class App {
         ////////////////////////////////////
         // Games.src  создание директорий.
 
-        srcInnerDir[0] = new File(gamesInnerDir[0] + "\\main");
-        srcInnerDir[1] = new File(gamesInnerDir[0] + "\\test");
+        srcInnerDir[0] = new File(gamesInnerDir[0] + DirStorage.MAIN_DIR);
+        srcInnerDir[1] = new File(gamesInnerDir[0] + DirStorage.TEST_DIR);
 
         this.dirCreation(gamesInnerDir[0], srcInnerDir);
-
 
 
         ////////////////////////////////////
         // Games.src.main  создание файлов.
 
-        this.fileCreation(srcInnerDir[0], DirStorage.FILES.MAIN);
-        this.fileCreation(srcInnerDir[0], DirStorage.FILES.UTILS);
-
+        this.fileCreation(srcInnerDir[0], DirStorage.FILES.MAIN_FILE);
+        this.fileCreation(srcInnerDir[0], DirStorage.FILES.UTILS_FILE);
 
 
         ////////////////////////////////////
         // Games.res  создание директорий.
 
-        resInnerDir[0] = new File(gamesInnerDir[1] + "\\drawables");
-        resInnerDir[1] = new File(gamesInnerDir[1] + "\\vectors");
-        resInnerDir[2] = new File(gamesInnerDir[1] + "\\icons");
+        resInnerDir[0] = new File(gamesInnerDir[1] + DirStorage.DRAWABLES_DIR);
+        resInnerDir[1] = new File(gamesInnerDir[1] + DirStorage.VECTORS_DIR);
+        resInnerDir[2] = new File(gamesInnerDir[1] + DirStorage.ICONS_DIR);
 
         this.dirCreation(gamesInnerDir[1], resInnerDir);
 
 
-
-
         ////////////////////////////////////
         // Games.temp  создание файлов.
-        File temp = this.fileCreation(gamesInnerDir[3], DirStorage.FILES.TEMP);
+        File temp = this.fileCreation(gamesInnerDir[3], DirStorage.FILES.TEMP_FILE);
         this.writeToFile(temp, str.toString());
 
 
@@ -243,21 +237,21 @@ public class App {
         GameProgress game2 = new GameProgress(50, 10, 6, 5.98);
         GameProgress game3 = new GameProgress(100, 50, 7, 8.46);
 
-        saveGame(gamesInnerDir[2] + "\\game1.dat", game1);
-        saveGame(gamesInnerDir[2] + "\\game2.dat", game2);
-        saveGame(gamesInnerDir[2] + "\\game3.dat", game3);
+        saveGame(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[0], game1);
+        saveGame(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[1], game2);
+        saveGame(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[2], game3);
 
-        zipFiles(gamesInnerDir[2] + "\\game1.zip", gamesInnerDir[2] + "\\game1.dat");
-        zipFiles(gamesInnerDir[2] + "\\game2.zip", gamesInnerDir[2] + "\\game2.dat");
-        zipFiles(gamesInnerDir[2] + "\\game3.zip", gamesInnerDir[2] + "\\game3.dat");
+        zipFiles(gamesInnerDir[2] + DirStorage.FILES.GAME_ZIP_FILE[0], gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[0]);
+        zipFiles(gamesInnerDir[2] + DirStorage.FILES.GAME_ZIP_FILE[1], gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[1]);
+        zipFiles(gamesInnerDir[2] + DirStorage.FILES.GAME_ZIP_FILE[2], gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[2]);
 
 
         ////////////////////////////////////
         //  Архивация объектов и удаление объектов *.dat
 
-        File gm1 = new File(gamesInnerDir[2] + "\\game1.dat");
-        File gm2 = new File(gamesInnerDir[2] + "\\game2.dat");
-        File gm3 = new File(gamesInnerDir[2] + "\\game3.dat");
+        File gm1 = new File(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[0]);
+        File gm2 = new File(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[1]);
+        File gm3 = new File(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[2]);
 
         gm1.delete();
         gm2.delete();
@@ -266,12 +260,12 @@ public class App {
 
         ////////////////////////////////////
         //  Разархивация объектов и вывод в консоле
-        openZip(gamesInnerDir[2] + "\\game2.zip", gamesInnerDir[2] + "\\game4.dat");
+        openZip(gamesInnerDir[2] + DirStorage.FILES.GAME_ZIP_FILE[1], gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[3]);
 
 
         ////////////////////////////////////
         //  Десериализация файла
-        GameProgress gameOut = openProgress(gamesInnerDir[2] + "\\game4.dat");
+        GameProgress gameOut = openProgress(gamesInnerDir[2] + DirStorage.FILES.GAME_FILE[3]);
 
 
         ////////////////////////////////////
